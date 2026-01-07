@@ -1,0 +1,30 @@
+name: Deploy Dashboard to Hugging Face
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'dashboard/**'
+
+jobs:
+  deploy-dashboard:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Push to Hugging Face Space
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "GitHub Actions"
+        
+        git clone https://huggingface.co/spaces/ACombey/getaround-dashboard hf-space
+        cd hf-space
+        
+        cp -r ../dashboard/* .
+        
+        git add .
+        git commit -m "Deploy dashboard from GitHub Actions" || echo "No changes"
+        git push https://TON_USERNAME:${HF_TOKEN}@huggingface.co/spaces/ACombey/getaround-dashboard

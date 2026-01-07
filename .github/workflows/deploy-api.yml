@@ -1,0 +1,37 @@
+name: Deploy API to Hugging Face
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'api/**'
+      - 'models/**'
+
+jobs:
+  deploy-api:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        lfs: true  # Pour les gros fichiers modèles
+    
+    - name: Push to Hugging Face Space
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "GitHub Actions"
+        
+        # Clone ton Space HF
+        git clone https://huggingface.co/spaces/ACombey/getaround-api hf-space
+        cd hf-space
+        
+        # Copie les fichiers
+        cp -r ../api/* .
+        cp -r ../models .
+        
+        # Commit et push
+        git add .
+        git commit -m "Deploy from GitHub Actions" || echo "No changes"
+        git push https://TON_USERNAME:${HF_TOKEN}@huggingface.co/spaces/ACombey/getaround-api
