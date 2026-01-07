@@ -24,7 +24,7 @@ jobs:
         git config --global user.name "GitHub Actions"
         
         # Clone ton Space HF
-        git clone https://huggingface.co/spaces/ACombey/getaround-api hf-space
+        git clone https://huggingface.co/spaces/Combey/getaround-api hf-space
         cd hf-space
         
         # Copie les fichiers
@@ -34,4 +34,4 @@ jobs:
         # Commit et push
         git add .
         git commit -m "Deploy from GitHub Actions" || echo "No changes"
-        git push https://TON_USERNAME:${HF_TOKEN}@huggingface.co/spaces/ACombey/getaround-api
+        git push https://TON_USERNAME:${HF_TOKEN}@huggingface.co/spaces/Combey/getaround-api
